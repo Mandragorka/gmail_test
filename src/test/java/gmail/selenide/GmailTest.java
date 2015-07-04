@@ -7,10 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-public class GmailTests {
+public class GmailTest {
 
     private LoginPage loginPage = new LoginPage();
     private MainPage mainPage = new MainPage();
@@ -22,24 +21,23 @@ public class GmailTests {
     }
 
     @Test
-    public void sendAndSearchTest() {
-        String subject = "Hello_" + System.currentTimeMillis();
+    public void testGmailSendAndSearch() {
+        String subject = "Hello" + System.currentTimeMillis();
 
         // User login to gmail account
         loginPage.login(Config.email, Config.password);
 
         // Send new message
-        mainPage.composeNewMessage();
-        mainPage.setReceiver(Config.email);
-        mainPage.setSubject(subject);
-        mainPage.sendEmail();
+        mainPage.sendEmail(Config.email, subject);
 
         // Make sure that email is received
         mainPage.goToInbox();
-        mainPage.emailList.filter(text(subject)).shouldHaveSize(1);
+        mainPage.emailList.filter(text(subject)).get(0).shouldHave(text(subject));
 
         // Search for email by subject
-        mainPage.searchForEmailBySubject("subject: " + subject);
-        mainPage.emailList.filter(visible).shouldHaveSize(1);
+        mainPage.searchForEmailBySubject(subject);
+        // Make sure that there is only one email in search result with given subject
+        mainPage.emailList.shouldHaveSize(1);
+        mainPage.emailList.get(0).shouldHave(text(subject));
     }
 }
