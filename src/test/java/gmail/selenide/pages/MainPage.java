@@ -13,9 +13,9 @@ public class MainPage {
 
     public void sendEmail(String email, String subjectText) {
         $("div[gh=\"cm\"]").click();
-        $(byText("Send")).click();
         $(By.name("to")).setValue(email);
         $(By.name("subjectbox")).setValue(subjectText);
+        $(byText("Send")).click();
     }
 
     public void goToInbox() {
