@@ -1,6 +1,7 @@
 package gmail.selenide;
 
 import com.codeborne.selenide.Configuration;
+import gmail.Config;
 import gmail.selenide.pages.LoginPage;
 import gmail.selenide.pages.MainPage;
 import org.junit.Before;
