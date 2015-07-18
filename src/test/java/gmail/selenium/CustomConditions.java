@@ -26,4 +26,36 @@ public class CustomConditions {
             }
         };
     }
+
+    public static ExpectedCondition<Boolean> firstElementHasText(final List<WebElement> element, final String text) {
+        return new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver input) {
+                return ExpectedConditions.textToBePresentInElement(element.get(0), text).apply(input);
+            }
+        };
+    }
+
+    public static ExpectedCondition<Boolean> textOf(final LazyWebElement lazyWebElement, final String text) {
+        return new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver input) {
+                return ExpectedConditions.textToBePresentInElement(lazyWebElement.get(), text).apply(input);
+            }
+        };
+    }
+
+    public interface LazyWebElement {
+        WebElement get();
+    }
+
+    public static ExpectedCondition<Boolean> listNthElementHasText(final List<WebElement> elements, final int n, final String expectedText) {
+        return new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver input) {
+                try {
+                    return elements.get(n).getText().contains(expectedText);
+                } catch (IndexOutOfBoundsException e) {
+                    return false;
+                }
+            }
+        };
+    }
 }

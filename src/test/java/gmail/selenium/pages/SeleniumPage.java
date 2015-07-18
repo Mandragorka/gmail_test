@@ -1,8 +1,8 @@
 package gmail.selenium.pages;
 
-import gmail.Config;
 import gmail.selenium.CustomConditions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -23,6 +23,10 @@ public class SeleniumPage {
         driver.get(url);
     }
 
+    public WebElement $(String cssSelector) {
+        return $(By.cssSelector(cssSelector));
+    }
+
     public WebElement $(By by) {
         waitUntil(CustomConditions.elementPresent(by), 10);
         return driver.findElement(by);
@@ -36,7 +40,11 @@ public class SeleniumPage {
         new WebDriverWait(driver, timeout).until(expectedCondition);
     }
 
-    public void assertThat(ExpectedCondition<Boolean> expectedCondition) {
-        waitUntil(expectedCondition, Config.timeout);
+    public void assertThat(ExpectedCondition<Boolean> expectedCondition, long timeout) {
+        waitUntil(expectedCondition, timeout);
+    }
+
+    public void setValueAndEnter(WebElement element, String data) {
+        element.sendKeys(data + Keys.ENTER);
     }
 }

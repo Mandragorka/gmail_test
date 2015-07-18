@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static gmail.selenium.CustomConditions.sizeOf;
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElement;
+import static gmail.selenium.CustomConditions.listNthElementHasText;
+import static gmail.selenium.CustomConditions.textOf;
 
 public class GmailTest {
 
@@ -30,23 +30,22 @@ public class GmailTest {
     public void testAtGmail() {
         String subject = "Hello" + System.currentTimeMillis();
 
-        // User login to gmail account
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login(Config.email, Config.password);
 
-        // Send new message
         GmailPage gmailPage = new GmailPage(driver);
         gmailPage.sendEmail(Config.email, subject);
 
-        // Make sure that email is received
         gmailPage.goToInbox();
-        gmailPage.assertThat(textToBePresentInElement(gmailPage.getFirstEmail(), subject));
+        CustomConditions.LazyWebElement lazyEmail = gmailPage.getFirstEmail();
+        //gmailPage.assertThat(firstElementHasText((gmailPage.getEmailList()), subject));
+        gmailPage.assertThat(textOf(gmailPage.getFirstEmail(), subject), 10);
 
-        // Search for email by subject
         gmailPage.searchForEmailBySubject(subject);
-        // Make sure that there is only one email in search result with given subject
-        gmailPage.waitUntil(sizeOf(gmailPage.getEmailList(), 1), 10);
-        gmailPage.assertThat(textToBePresentInElement(gmailPage.getFirstEmail(), subject));
+        gmailPage.assertThat(listNthElementHasText(gmailPage.getEmailList(), 0, subject), 10);
+        //gmailPage.waitUntil(sizeOf(gmailPage.getEmailList(), 1), 10);
+        //gmailPage.assertThat(firstElementHasText(gmailPage.getEmailList(), subject));
+        //gmailPage.assertThat(textOf(gmailPage.getFirstEmail(), subject), 10);
     }
 }

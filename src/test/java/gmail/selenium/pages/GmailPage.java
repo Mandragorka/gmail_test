@@ -1,5 +1,6 @@
 package gmail.selenium.pages;
 
+import gmail.selenium.CustomConditions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -10,11 +11,8 @@ import java.util.List;
 
 public class GmailPage extends SeleniumPage {
 
-    @FindBy(css = "[role=\"main\"] tr.zA")
+    @FindBy(css = "[role=\"main\"] .Cp tbody>tr")
     List<WebElement> emailList;
-
-    @FindBy(css = "[role=\"main\"] tr.zA:nth-child(1)")
-    WebElement firstEmail;
 
     public GmailPage(WebDriver driver) {
         super(driver);
@@ -24,8 +22,12 @@ public class GmailPage extends SeleniumPage {
         return emailList;
     }
 
-    public WebElement getFirstEmail() {
-        return firstEmail;
+    public CustomConditions.LazyWebElement getFirstEmail() {
+        return new CustomConditions.LazyWebElement() {
+            public WebElement get() {
+                return emailList.get(0);
+            }
+        };
     }
 
     public void sendEmail(String email, String subjectText) {
