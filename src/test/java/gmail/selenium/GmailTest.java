@@ -38,12 +38,14 @@ public class GmailTest {
         gmailPage.sendEmail(Config.email, subject);
 
         gmailPage.goToInbox();
-        CustomConditions.LazyWebElement lazyEmail = gmailPage.getFirstEmail();
-        //gmailPage.assertThat(firstElementHasText((gmailPage.getEmailList()), subject));
         gmailPage.assertThat(textOf(gmailPage.getFirstEmail(), subject), 10);
+
+        //CustomConditions.LazyWebElement lazyEmail = gmailPage.getFirstEmail();
+        //gmailPage.assertThat(firstElementHasText((gmailPage.getEmailList()), subject));
 
         gmailPage.searchForEmailBySubject(subject);
         gmailPage.assertThat(listNthElementHasText(gmailPage.getEmailList(), 0, subject), 10);
+        
         //gmailPage.waitUntil(sizeOf(gmailPage.getEmailList(), 1), 10);
         //gmailPage.assertThat(firstElementHasText(gmailPage.getEmailList(), subject));
         //gmailPage.assertThat(textOf(gmailPage.getFirstEmail(), subject), 10);
