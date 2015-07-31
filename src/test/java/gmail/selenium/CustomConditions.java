@@ -35,16 +35,16 @@ public class CustomConditions {
         };
     }
 
+    public interface LazyWebElement {
+        WebElement get();
+    }
+
     public static ExpectedCondition<Boolean> textOf(final LazyWebElement lazyWebElement, final String text) {
         return new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver input) {
                 return ExpectedConditions.textToBePresentInElement(lazyWebElement.get(), text).apply(input);
             }
         };
-    }
-
-    public interface LazyWebElement {
-        WebElement get();
     }
 
     public static ExpectedCondition<Boolean> listNthElementHasText(final List<WebElement> elements, final int n, final String expectedText) {
